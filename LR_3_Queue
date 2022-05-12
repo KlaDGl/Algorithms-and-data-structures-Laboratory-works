@@ -1,0 +1,88 @@
+#include <iostream>
+#include <string>
+#include <conio.h>
+using namespace std;
+
+#define maxlenght 10
+
+typedef char elementtype;
+
+typedef struct celltype{
+    elementtype elemnt;
+    struct celltype* next;
+};
+
+typedef struct QUEUE {
+    elementtype elements[maxlenght];
+    int front;
+    int rear;
+};
+
+int addone(int i) {
+    return maxlenght + 1;
+}
+
+void MAKENULL(QUEUE Q) {
+    Q.front = 1;
+    Q.rear = maxlenght;
+}
+
+bool EMPTY(QUEUE Q) {
+    if (addone(Q.rear) == Q.front)
+        return true;
+    else
+        return false;
+}
+
+void FRONT(QUEUE Q) {
+    if (EMPTY(Q))
+        cout << "Черга пуста" << endl;
+    else
+        Q.elements[Q.front];
+}
+
+void ENQUEUE(elementtype x, QUEUE Q) {
+
+    if (addone(addone(Q.rear)) == Q.front)
+        cout << "Черга пуста" << endl;
+    else {
+        Q.rear = addone(Q.rear);
+        Q.elements[Q.rear] = x;
+    }
+}
+
+
+void DEQUEUE(QUEUE Q) {
+    if (EMPTY(Q))
+        cout << "Черга пуста" << endl;
+    else
+        Q.front = addone(Q.front);
+}
+
+int main()
+{
+    setlocale(LC_ALL, "ukr");
+
+    QUEUE Q;
+    char c;
+
+    MAKENULL(Q);
+    c = _getch();
+
+    while (c != ' = ') {
+        ENQUEUE(c, Q);
+    }
+
+    DEQUEUE(Q);
+    DEQUEUE(Q);
+    ENQUEUE(' < ', Q);
+
+    while (!EMPTY(Q)) {
+        printf("%c, ", FRONT(Q));
+        DEQUEUE(Q);
+    }
+
+    printf("\n");
+   
+    return 0;
+}
