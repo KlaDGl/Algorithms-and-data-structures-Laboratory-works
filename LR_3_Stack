@@ -1,0 +1,101 @@
+#include <iostream>
+#include <string>
+#include <conio.h>
+using namespace std;
+
+#define maxlenght 10
+typedef char elementtype;
+
+typedef struct STACK
+{
+    int top = -1;
+    elementtype elements[maxlenght];
+};
+
+void MAKENULL(STACK S) {
+    S.top = maxlenght + 1;
+}
+
+bool EMPTY(STACK S) {
+    if (S.top > maxlenght)
+        return true;
+    else
+        return false;
+}
+
+elementtype TOP(STACK S) {
+    if (EMPTY(S))
+        cout << "Стек порожній" << endl;
+    else
+        return S.elements[S.top];
+}
+
+void POP(STACK S) {
+    if (EMPTY(S))
+        cout << "Стек порожній" << endl;
+    else
+        S.top = S.top - 1;
+}
+
+elementtype PUSH(elementtype x, STACK S) {
+    if(S.top == 1)
+        cout << "Стек повний" << endl;
+    else
+    {
+        S.top = S.top - 1;
+        S.elements[S.top] = x;
+    }
+}
+
+void PRINT(STACK S) {
+    elementtype n = S.elements[S.top];
+    for (int i = S.top; i < maxlenght; i++) {
+        cout << "-----" << endl << "| " << n << " |" << endl;
+    }
+    cout << "-----" << endl;
+}
+
+int main()
+{
+    setlocale(LC_ALL, "ukr");
+
+    STACK S;
+    char c;
+
+    MAKENULL(S);
+
+    c = getch();
+
+    while (c != ' = ') {
+
+        switch (c) {
+
+            // витерти останній символ              
+
+        case '#': POP(S); break;
+
+            // витерти усю стрічку
+
+        case '@': MAKENULL(S); break;
+
+            // продублювати останній символ
+
+        case '^ ': PUSH(TOP(S), S); break;
+
+            // додати символ до стрічки
+
+        default:
+
+            PUSH(c, S);
+
+            c = getch();
+
+        }
+
+        // вивести введену стрічку на екран
+
+        PRINT(S);
+
+        return 0;
+    }
+}
