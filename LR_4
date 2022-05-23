@@ -1,0 +1,112 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+typedef char nametype[20];
+
+struct celltype {
+    nametype element;
+    celltype* next;
+};
+const int DICT_SIZE = 5;
+typedef celltype* DICTIONARY[DICT_SIZE];
+void MAKENULL(DICTIONARY A) {
+    int i;
+    for (i = 0; i < DICT_SIZE; i++) {
+        A[i] = NULL;
+    }
+}
+int Hash(nametype x) {
+    int sum = 0;
+    for (unsigned int i = 0; i < strlen(x); i++) {
+        sum += (int)x[i];
+}
+    return sum % (DICT_SIZE);
+}
+
+bool MEMBER(nametype x, DICTIONARY& A)
+{
+    celltype* current;
+    current = A[Hash(x)];
+    while (current != NULL)
+    {
+        if (current->element == x)
+            return true;
+        else
+            current = current->next;
+    }
+    return false;
+}
+
+void INSERT(nametype x, DICTIONARY& A)
+{
+    int bucket;
+    celltype* oldHeader;
+    if (!MEMBER(x, A))
+    {
+        bucket = Hash(x);
+        oldHeader = A[bucket];
+        A[bucket] = new celltype;
+        A[bucket]->element = x;
+        A[bucket]->next = oldHeader;
+    }
+}
+
+void PRINT(DICTIONARY A) {
+    celltype* current;
+    for (int i = 0; i < DICT_SIZE; i++) {
+        printf("\n[%d]", i);
+        current = A[i];
+        while (current != NULL) {
+            printf("%s ", current->element);
+            current = current->next;
+        }
+    }
+    printf("\n");
+}
+
+void DELETE(nametype x, DICTIONARY& A)
+{
+    int bucket;
+    celltype* current;
+    bucket = Hash(x);
+    if (A[bucket] != NULL)
+    {
+        if (A[bucket]->element == x)
+        {
+            A[bucket] = A[bucket]->next;
+        }
+        else
+        {
+            current = A[bucket];
+            while (current->next != NULL)
+            {
+                if (current->next->element == x)
+                {
+                    current->next = current->next->next;
+                    break;
+                }
+                else
+                {
+                    current = current->next;
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    DICTIONARY A;
+    char *strings[DICT_SIZE] = { "Volodymyr","Mykhaylo","Anatoliy","Yuriy","Bohdan","Tymofiy","Illya","Leonid","Ruslan","Mykhaylo","Andriy","Yevheniy","Danylo","Mikita","Adam" };
+    MAKENULL(A);
+    for (int i = 0; i < DICT_SIZE; i++)
+    {
+        INSERT(strings[i], A);
+    }
+
+    PRINT(A);
+    DELETE("Ruslan", A);
+    PRINT(A);
+    return 0;
+}
